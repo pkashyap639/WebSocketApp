@@ -1,7 +1,40 @@
 {
+  "name": "websocketapp",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/pkashyap639/WebSocketApp#readme",
+  "bugs": {
+    "url": "https://github.com/pkashyap639/WebSocketApp/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pkashyap639/WebSocketApp.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
+    "@socket.io/redis-adapter": "^8.3.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "express-validator": "^7.3.2",
+    "helmet": "^8.2.0",
+    "ioredis": "^5.11.1",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.7.4"
+    "mongoose": "^9.7.4",
+    "morgan": "^1.11.0",
+    "socket.io": "^4.8.3",
+    "winston": "^3.19.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }
