@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import "./config/redis.js";
+import authRoutes from "./routes/AuthRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -10,6 +11,8 @@ app.use(express.json());
 app.get("/health", (req, res) => {
   res.json({ status: "ok", uptime: process.uptime() });
 });
+
+app.use("/", authRoutes);
 
 const PORT = process.env.PORT || 3000;
 
