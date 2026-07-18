@@ -38,3 +38,47 @@ export const registerUser = async (req, res) => {
     });
   }
 };
+
+export const LoginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    // find user
+    const user = await User.findOne({
+      email,
+    });
+    // check if user exist
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User Not Found",
+      });
+    }
+    // match password
+    const isMatch = await user.comparePassword(password);
+    // check if password is correct
+    if (!isMatch) {
+      return res.status(404).json({
+        success: false,
+        message: "Incorrect Password",
+      });
+    }
+    // Login Successful
+    return res.status(200).json({
+      success: true,
+      message: "Login Successful",
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      },
+    });
+    return res.send(user);
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error,
+    });
+  }
+};
