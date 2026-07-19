@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import generateToken from "../utils/generateToken.js";
 
 export const registerUser = async (req, res) => {
   try {
@@ -62,10 +63,12 @@ export const LoginUser = async (req, res) => {
         message: "Incorrect Password",
       });
     }
+    const token = generateToken(user);
     // Login Successful
     return res.status(200).json({
       success: true,
       message: "Login Successful",
+      token,
       user: {
         id: user._id,
         username: user.username,
@@ -73,7 +76,6 @@ export const LoginUser = async (req, res) => {
         role: user.role,
       },
     });
-    return res.send(user);
   } catch (error) {
     res.status(400).json({
       success: false,
