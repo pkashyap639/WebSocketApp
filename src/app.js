@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import "./config/redis.js";
 import authRoutes from "./routes/AuthRoutes.js";
+import SocketRoutes from "./routes/SocketRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -13,6 +14,7 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/", authRoutes);
+app.use("/", SocketRoutes);
 
 const PORT = process.env.PORT || 3000;
 
