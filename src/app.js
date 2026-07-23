@@ -4,13 +4,29 @@ import connectDB from "./config/db.js";
 import "./config/redis.js";
 import authRoutes from "./routes/AuthRoutes.js";
 import SocketRoutes from "./routes/SocketRoutes.js";
+import mongoose from "mongoose";
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-app.get("/health", (req, res) => {
-  res.json({ status: "ok", uptime: process.uptime() });
+app.get("/health", async (req, res) => {
+  const mongoStatus = mongoose.connection.readyState === 1 ? "ok" : "down";
+
+  let redisStatus = "ok";
+  try {
+    await redis.ping();
+  } catch (err) {
+    redisStatus = "down";
+  }
+
+  const allOk = mongoStatus === "ok" && redisStatus === "ok";
+
+  res.status(allOk ? 200 : 503).json({
+    mongodb: mongoStatus,
+    redis: redisStatus,
+    uptime: process.uptime(),
+  });
 });
 
 app.use("/", authRoutes);
