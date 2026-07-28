@@ -5,9 +5,12 @@ import "./config/redis.js";
 import authRoutes from "./routes/AuthRoutes.js";
 import SocketRoutes from "./routes/SocketRoutes.js";
 import mongoose from "mongoose";
+import { createServer } from "http";
+import { initSocket } from "./socket/index.js";
 dotenv.config();
 
 const app = express();
+const httpServer = createServer(app);
 app.use(express.json());
 
 app.get("/health", async (req, res) => {
@@ -37,7 +40,8 @@ const PORT = process.env.PORT || 3000;
 async function startServer() {
   try {
     await connectDB();
-    app.listen(PORT, () => {
+    const io = await initSocket(httpServer);
+    httpServer.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
   } catch (error) {
